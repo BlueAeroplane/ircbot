@@ -9,30 +9,15 @@ import datetime
 import base64
 import logging
 import random
+import json
 
-#--------------------------------------------------------------#
+config = json.load(open("config.json"))
+cache = json.load(open("cache.json"))
 
-botnick = "mlgprom8quickscopeyoul8er"
-server = "chat.freenode.net"
-port = 6697
-main_channel = [""] # Useful for working on the bot without flooding other channels with join/quit messages.
-channels = [""] # You can leave this empty if you want to only use main_channel.
-channels_different_command_trigger = [""] # You can leave this empty if you want.
-join_on_invite = True # The annoying brat will join on-invite if set to True.
-ssl_enabled = True # Not recommended to set this to false. 
-sasl_login = False
-Enforce_SASL = False # Disconnects & kills the bot if SASL fails if set to True.
-nickserv_login = False
-server_require_pass = False # Set this to true if the server requires a password.
-account_username = '' # Used for NickServ/SASL login.
-account_password = '' # Used for NickServ/SASL login.
-server_password = ''
-char1 = ''
-char2 = ''
-main_channel_only_mode = True # Will only join the main channel if True
+channels_different_command_trigger = "" # No longer used; will be removed soon.
+char1 = '' # No longer used; will be removed soon.
+char2 = '' # No longer used; will be removed soon.
 logging_level = logging.DEBUG # Sets the logging level (valid options are DEBUG, INFO, WARNING, ERROR and CRITICAL)
-
-#---------------------------------------------------------------#
 
 Kid_IQ = "-1" # Such useless variable, but why not? :P
 
@@ -40,7 +25,7 @@ logging.getLogger(None).setLevel(logging_level)
 logging.basicConfig()
 
 class TokenBucket(object):
-    """An implementation of the token bucket algorithm.
+    """An implementation of the token bSucket algorithm.
 
     >>> bucket = TokenBucket(80, 0.5)
     >>> bucket.consume(1)
@@ -98,13 +83,13 @@ def sendmsg(chan, msg):
     sendraw("PRIVMSG %s :%s \n" % (chan, msg))
 
 def join_channel():
-    if main_channel_only_mode == False:
+    if config['main_channel_only_mode'] == "False":
         logging.info("Joining the channels...")
-        joinchan(','.join(main_channel))
-        joinchan(','.join(channels))
-    elif main_channel_only_mode == True:
+        joinchan(config['main_channel'])
+        joinchan(config['channels'])
+    elif config['main_channel_only_mode'] == "True":
         logging.info("Main channel only mode is enabled, Only joining the main channel(s)")
-        joinchan(','.join(main_channel))
+        joinchan(config['main_channel'])
     else:
         logging.error("Invalid option for the Main channel only mode, Shutting down...")
         sys.exit()
@@ -144,35 +129,35 @@ def parse_ircmsg(rawmsg):
 
     return parsed
 
-if ssl_enabled == True:
+if config['ssl_enabled'] == 'True':
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 else:
     ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-if ssl_enabled == True:
-    s.connect((server, port))
+if config['ssl_enabled'] == 'True':
+    s.connect((config['server'], int(config['port'])))
     ircsock = ssl.wrap_socket(s)
 else:
-    ircsock.connect((server, port))
-if sasl_login == True:
+    ircsock.connect((config['server'], int(config['port'])))
+if config['sasl'] == 'True':
     sendraw("CAP REQ :sasl\r\n")
     sendraw("AUTHENTICATE PLAIN\r\n")
-    datastr= "%s\0%s\0%s" % (account_username, account_username, account_password)
+    datastr= "%s\0%s\0%s" % (config['account_username'], config['account_username'], config['account_password'])
     sendraw("AUTHENTICATE " + base64.b64encode(datastr.encode()).decode() + "\r\n")
     sendraw("CAP END\r\n")
 else:
     pass
-sendraw("USER %s %s %s :uw0tm8? \n" % (botnick, botnick, botnick))
-if server_require_pass == True:
-    sendraw("PASS %s \n" % (server_password))
+sendraw("USER %s %s %s :uw0tm8? \n" % (config['botnick'], config['botnick'], config['botnick']))
+if len(config['server_password']) != 0:
+    sendraw("PASS %s \n" % (config['server_password']))
 else:
     pass
 
-sendraw("NICK %s \n" % (botnick))
+sendraw("NICK %s \n" % (config['botnick']))
 
-if nickserv_login == True:
+if config['nickserv_login'] == 'True':
     time.sleep(1.5)
-    sendraw("PRIVMSG NickServ :IDENTIFY %s %s\r\n" % (account_username, account_password))
+    sendraw("PRIVMSG NickServ :IDENTIFY %s %s\r\n" % (config['account_username'], config['account_password']))
 else:
     pass
 
@@ -202,23 +187,23 @@ while 1:
         ping(' '.join(message['args']))
 
     elif message['command'] == '904':
-        ID = False
+        cache['ID'] = "False"
 
     elif message['command'] == '903':
-        ID = True
+        cache['ID'] = "True"
 
     elif message['command'] == '437' or message['command'] == '433':
-        logging.error("Botnick %s is unavailable." % (botnick))
+        logging.error("Botnick %s is unavailable." % (config['botnick']))
         sys.exit()
 
     elif message['command'] == '376':
-        if sasl_login == True:
-            if ID == True:
+        if config['sasl'] == "True":
+            if cache['ID'] == "True":
                 logging.info("Successfuly been identified through SASL")
                 join_channel()
             else:
                 logging.warning("Failed to login through SASL")
-            if Enforce_SASL == True:
+            if config['enforce_sasl'] == "True":
                 logging.error("Disconnecting: SASL has failed")
                 sys.exit()
             else:
@@ -227,7 +212,7 @@ while 1:
            join_channel()
 
     elif message['command'] == "INVITE":
-        if join_on_invite == True:
+        if config['join_on_invite'] == "True":
             cmd_args = message['args'][-1].split(' ')
             logging.info(message['replyto']+" invited me into "+cmd_args[0])
             joinchan(cmd_args[0])
