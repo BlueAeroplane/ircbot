@@ -1,5 +1,4 @@
 # 12 year old simulator (IRC Bot)
-*Bot still in development*
 Simulates an annoying 12 year old kid on the internet.
 
 
@@ -9,3 +8,4 @@ Simulates an annoying 12 year old kid on the internet.
 * Have the bot simulate an angry 12 year old.
 * RAGEQUITS!
 * Have the bot spam lenny faces periodically.
+* Actually finishing the fucking bot.
