@@ -10,6 +10,3 @@ Simulates an annoying 12 year old kid on the internet.
 * Have the bot spam lenny faces periodically.
 * Actually finishing the fucking bot.
 * Code improvements and cleanup
-* 
-
-The bot is still in development.
