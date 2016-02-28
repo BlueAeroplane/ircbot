@@ -10,3 +10,5 @@ Simulates an annoying 12 year old kid on the internet.
 * Have the bot spam lenny faces periodically.
 * Actually finishing the fucking bot.
 * Code improvements and cleanup
+
+This README has *not* been written by a 12 year old.
