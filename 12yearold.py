@@ -162,7 +162,7 @@ if sasl_login == True:
     sendraw("CAP END\r\n")
 else:
     pass
-sendraw("USER %s %s %s :uw0tm8? %s\n" % (botnick, botnick, botnick, bot_version))
+sendraw("USER %s %s %s :uw0tm8? \n" % (botnick, botnick, botnick))
 if server_require_pass == True:
     sendraw("PASS %s \n" % (server_password))
 else:
@@ -223,7 +223,7 @@ while 1:
                 sys.exit()
             else:
                 join_channel()
-       else:
+        else:
            join_channel()
 
     elif message['command'] == "INVITE":
