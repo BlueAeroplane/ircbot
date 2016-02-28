@@ -1,0 +1,16 @@
+{
+    "botnick": "mlgprom8quickscopeyoul8er",
+    "server": "chat.freenode.net",
+    "port": "6697",
+    "main_channel": "",
+    "channels": "",
+    "join_on_invite": "True",
+    "ssl_enabled": "True",
+    "sasl": "False",
+    "enforce_sasl": "False",
+    "nickserv_login": "False",
+    "account_username": "",
+    "account_password": "",
+    "server_password": "",
+    "main_channel_only_mode": "True"
+}
