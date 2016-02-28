@@ -4,13 +4,13 @@
     "port": "6697",
     "main_channel": "",
     "channels": "",
-    "join_on_invite": "True",
-    "ssl_enabled": "True",
-    "sasl": "False",
-    "enforce_sasl": "False",
-    "nickserv_login": "False",
+    "join_on_invite": true,
+    "ssl_enabled": true,
+    "sasl": false,
+    "enforce_sasl": false,
+    "nickserv_login": false,
     "account_username": "",
     "account_password": "",
     "server_password": "",
-    "main_channel_only_mode": "True"
+    "main_channel_only_mode": true
 }
