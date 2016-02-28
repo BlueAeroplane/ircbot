@@ -12,5 +12,8 @@
     "account_username": "",
     "account_password": "",
     "server_password": "",
-    "main_channel_only_mode": true
+    "main_channel_only_mode": true,
+    "spam_lenny": false,
+    "spam_lenny_time": "random",
+    "speak_type": "new" 
 }
