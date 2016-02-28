@@ -28,9 +28,6 @@ import json
 config = json.load(open("config.json"))
 cache = json.load(open("cache.json"))
 
-channels_different_command_trigger = "" # No longer used; will be removed soon.
-char1 = '' # No longer used; will be removed soon.
-char2 = '' # No longer used; will be removed soon.
 logging_level = logging.DEBUG # Sets the logging level (valid options are DEBUG, INFO, WARNING, ERROR and CRITICAL)
 
 logging.getLogger(None).setLevel(logging_level)
@@ -85,10 +82,9 @@ def ping(arg):
 def joinchan(chan):
     sendraw("JOIN %s \n" % (chan))
 
-def random():
+def speak():
     bullshit = ['Fgt', 'u wot m8', '1v1 me quickscope n0scope bitch', 'penis', 'b00bs', 'minecraft is gud', 'fk you', 'm8', "I'm MLG pro lol", 'OOOH OHOHHH QUICKSCOPE MOTHERFUCKER OOOOH', 'ur gay']
-    print("success")
-    sendmsg(message['replyto'], '%s' % (random.choice(foo)))
+    sendmsg(message['replyto'], '%s' % (random.choice(bullshit)))
 
 def sendmsg(chan, msg):
     logging.debug("sendmsg to %s (' %s ')" % (chan, msg))
@@ -239,26 +235,9 @@ while 1:
 
         cmd_args = message['args'][-1].split(' ')
 
-        ########
-        # if there's no command, there's nothing to do in this processing loop
-        if len(cmd_args) == 0:
-            continue
-
-        # first decide what command char is effective for the channel
-        wanted_char = char1
-        if message['replyto'] in channels_different_command_trigger:
-            wanted_char = char2
-
-        # separate the char from command
-        used_char = cmd_args[0][0:len(wanted_char)]
-        command_word = cmd_args[0][len(wanted_char):]
-        # and then check the message starts with the effective command char
-        if used_char != wanted_char:
-            continue
-
         # should be possible to simplify the rest again like such
-        if '' == command_word:
-            random()
+        if len(cmd_args[:1]) != 0:
+            speak()
 
         # run the command if they're allowed to
         if not command is None:
