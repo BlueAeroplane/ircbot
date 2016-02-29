@@ -18,7 +18,6 @@ import base64
 import datetime
 import json
 import logging
-import logging
 import new_speak
 import random
 import socket
