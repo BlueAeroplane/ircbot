@@ -24,7 +24,6 @@ import socket
 import ssl
 import sys
 import time
-
 from multiprocessing import Process
 
 config = json.load(open("config.json"))
@@ -97,18 +96,6 @@ def ping(arg):
 
 def joinchan(chan):
     sendraw(irc_command("JOIN", chan))
-
-def select_speak_type():
-    if config['speak_type'] == "legacy":
-        time.sleep(0.5)
-        speak()
-    elif config['speak_type'] == "new":
-        time.sleep(0.5)
-        new_speak.speak()
-
-def speak():
-    bullshit = ['Fgt', 'u wot m8', '1v1 me quickscope n0scope bitch', 'penis', 'b00bs', 'minecraft is gud', 'fk you', 'm8', "I'm MLG pro lol", 'OOOH OHOHHH QUICKSCOPE MOTHERFUCKER OOOOH', 'ur gay', 'u suk', 'fght m3 m8', '( ͡° ͜ʖ ͡°)']
-    sendmsg(message['replyto'], '%s' % (random.choice(bullshit)))
 
 def sendmsg(chan, msg):
     logging.debug("sendmsg to %s (' %s ')" % (chan, msg))
@@ -269,9 +256,11 @@ while 1:
         if len(cmd_args[0:]) != 0:
             if config['respond_by'] == "nick":
                 if config['botnick'] in " ".join(cmd_args):
-                    select_speak_type()
+                    time.sleep(0.5)
+                    new_speak.speak(sendmsg, message)
             elif config['respond_by'] == "all":
-                select_speak_type()
+                time.sleep(0.5)
+                new_speak.speak(sendmsg, message)
 
         # run the command if they're allowed to
         if not command is None:
