@@ -1,5 +1,5 @@
 {
-    "botnick": "mlgprom8quickscopeyoul8er",
+    "botnick": "mlgprom8",
     "server": "chat.freenode.net",
     "port": "6697",
     "main_channel": "",
@@ -12,8 +12,9 @@
     "account_username": "",
     "account_password": "",
     "server_password": "",
-    "main_channel_only_mode": true,
+    "main_channel_only_mode": false,
     "spam_lenny": false,
     "spam_lenny_time": "random",
-    "speak_type": "new" 
+    "speak_type": "new",
+    "respond_by": "nick"
 }
