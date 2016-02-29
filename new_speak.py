@@ -16,7 +16,7 @@
 
 import random
 
-words = ['fgt', 'm8', 'u', 'wot', 'penis', 'me', 'is', 'are', 'gay', 'ass', 'lookin', 'minecraft', 'fk', 'dank', 'memes', 'a', 'was', 'me', 'shit', 'piss', 'bitch', 'you', 'off', 'on', 'mum', 'quickscope', 'oooh', 'oh', 'motherfucka', 'such', 'many', '( ͡° ͜ʖ ͡°)', 'noscope', 'l33t', 'n0scope', 'oooooooohooooh', 'smoke', 'weed', 'everyday', 'fag', 'faggot', 'cunt', 'big', 'yeaaaaaaaa', 'sex', 'this', 'make', 'ho', 'suck', 'my', 'illuminati', 'confirmed', '9/11', 'r8', '8/8', 'as', 'at', 'am', 'homo', 'queer', 'lol', 'XDXDXDXD', 'lame', 'GG', 'bruh', 'bro', 'mad', 'lets', 'have', 'cancer', 'noone', 'cares', 'MLG', 'pro']
+words = ['fgt', 'm8', 'u', 'wot', 'penis', 'me', 'is', 'are', 'gay', 'ass', 'lookin', 'minecraft', 'fk', 'dank', 'memes', 'a', 'was', 'me', 'shit', 'piss', 'bitch', 'you', 'off', 'on', 'mum', 'quickscope', 'oooh', 'oh', 'motherfucka', 'such', 'many', '( ͡° ͜ʖ ͡°)', 'noscope', 'l33t', 'n0scope', 'oooooooohooooh', 'smoke', 'weed', 'everyday', 'fag', 'faggot', 'cunt', 'big', 'yeaaaaaaaa', 'sex', 'this', 'make', 'ho', 'suck', 'my', 'illuminati', 'confirmed', '9/11', 'r8', '8/8', 'as', 'at', 'am', 'homo', 'queer', 'lol', 'XDXDXDXD', 'lame', 'GG', 'bruh', 'bro', 'mad', 'lets', 'have', 'cancer', 'noone', 'cares', 'MLG', 'pro', 'let', 'eat', 'asshole', 'anus', 'anal', 'mom', 'dat', 'rectum', 'pepe', 'doritos', 'mountain', 'dew', 'hi', 'hey', 'bye']
 
 def get_phrase():
     number_of_words = random.randint(1, 12)
