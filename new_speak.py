@@ -15,7 +15,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import random
-import bot
 
 words = ['fgt', 'm8', 'u', 'wot', 'penis', 'me', 'is', 'are', 'gay', 'ass', 'lookin', 'minecraft', 'fk', 'dank', 'memes', 'a', 'was', 'me', 'shit', 'piss', 'bitch', 'you', 'off', 'on', 'mum', 'quickscope', 'oooh', 'oh', 'motherfucka', 'such', 'many', '( ͡° ͜ʖ ͡°)', 'noscope', 'l33t', 'n0scope', 'oooooooohooooh', 'smoke', 'weed', 'everyday', 'fag', 'faggot', 'cunt', 'big', 'yeaaaaaaaa', 'sex', 'this', 'make', 'ho', 'suck', 'my', 'illuminati', 'confirmed', '9/11', 'r8', '8/8', 'as', 'at', 'am', 'homo', 'queer', 'lol', 'XDXDXDXD', 'lame', 'GG', 'bruh', 'bro', 'mad', 'lets', 'have', 'cancer', 'noone', 'cares']
 
@@ -23,5 +22,5 @@ def get_phrase():
     number_of_words = random.randint(1, 12)
     return " ".join([random.choice(words) for _ in range(number_of_words)])
 
-def speak():
-    bot.sendmsg(bot.message['replyto'], get_phrase())
+def speak(sendmsg, message):
+    sendmsg(message['replyto'], get_phrase())
