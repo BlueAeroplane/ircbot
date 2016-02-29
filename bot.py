@@ -165,7 +165,7 @@ else:
     ircsock.connect((config['server'], int(config['port'])))
 
 if config['sasl']:
-    sendraw(irc_command("CAP", "REQ", sasl))
+    sendraw(irc_command("CAP", "REQ", "sasl"))
     sendraw(irc_command("AUTHENTICATE", "PLAIN"))
     datastr = "%s\0%s\0%s" % (config['account_username'], config['account_username'], config['account_password'])
     sendraw("AUTHENTICATE " + base64.b64encode(datastr.encode()).decode() + "\r\n")
