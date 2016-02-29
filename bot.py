@@ -109,17 +109,17 @@ def sendmsg(chan, msg):
     sendraw("PRIVMSG %s :%s \n" % (chan, msg))
 
 def join_channel():
-    if config['main_channel_only_mode'] == False:
+    if not config['main_channel_only_mode']:
         logging.info("Joining the channels...")
         joinchan(config['main_channel'])
         joinchan(config['channels'])
-        if config['spam_lenny'] == True:
+        if config['spam_lenny']:
             lenny_process = Process(initalize_lenny)
 
-    elif config['main_channel_only_mode'] == True:
+    elif config['main_channel_only_mode']:
         logging.info("Main channel only mode is enabled, Only joining the main channel(s)")
         joinchan(config['main_channel'])
-        if config['spam_lenny'] == True:
+        if config['spam_lenny']:
             lenny_process = Process(initalize_lenny)
     else:
         logging.error("Invalid option for the Main channel only mode, Shutting down...")
@@ -160,17 +160,17 @@ def parse_ircmsg(rawmsg):
 
     return parsed
 
-if config['ssl_enabled'] == True:
+if config['ssl_enabled']:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 else:
     ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-if config['ssl_enabled'] == True:
+if config['ssl_enabled']:
     s.connect((config['server'], int(config['port'])))
     ircsock = ssl.wrap_socket(s)
 else:
     ircsock.connect((config['server'], int(config['port'])))
-if config['sasl'] == True:
+if config['sasl']:
     sendraw("CAP REQ :sasl\r\n")
     sendraw("AUTHENTICATE PLAIN\r\n")
     datastr= "%s\0%s\0%s" % (config['account_username'], config['account_username'], config['account_password'])
@@ -186,7 +186,7 @@ else:
 
 sendraw("NICK %s \n" % (config['botnick']))
 
-if config['nickserv_login'] == True:
+if config['nickserv_login']:
     time.sleep(1.5)
     sendraw("PRIVMSG NickServ :IDENTIFY %s %s\r\n" % (config['account_username'], config['account_password']))
 else:
@@ -230,13 +230,13 @@ while 1:
         sys.exit()
 
     elif message['command'] == '376':
-        if config['sasl'] == True:
-            if cache['ID'] == True:
+        if config['sasl']:
+            if cache['ID']:
                 logging.info("Successfuly been identified through SASL")
                 join_channel()
             else:
                 logging.warning("Failed to login through SASL")
-            if config['enforce_sasl'] == True:
+            if config['enforce_sasl']:
                 logging.error("Disconnecting: SASL has failed")
                 sys.exit()
             else:
@@ -245,7 +245,7 @@ while 1:
            join_channel()
 
     elif message['command'] == "INVITE":
-        if config['join_on_invite'] == True:
+        if config['join_on_invite']:
             cmd_args = message['args'][-1].split(' ')
             logging.info(message['replyto']+" invited me into "+cmd_args[0])
             joinchan(cmd_args[0])
