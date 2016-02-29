@@ -14,17 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging
-import sys
-import ssl
-import socket
-import time
-import datetime
 import base64
-import logging
-import random
+import datetime
 import json
+import logging
+import logging
 import new_speak
+import random
+import socket
+import ssl
+import sys
+import time
+
 from multiprocessing import Process
 
 config = json.load(open("config.json"))
@@ -69,6 +70,12 @@ class TokenBucket(object):
 
 tokenbucket = TokenBucket(4, 0.5)
 
+def irc_command(command, *args):
+    last_arg = args[-1]
+    other_args = args[:-1]
+
+    return "{} {} :{}\r\n".format(command, " ".join(other_args), last_arg)
+
 def sendraw(msg):
     while not tokenbucket.consume(1):
         time.sleep(0.1)
@@ -87,10 +94,10 @@ def initalize_lenny():
 
 
 def ping(arg):
-    sendraw("PONG : %s \n" % (arg))
+    sendraw(irc_command("PONG", arg))
 
 def joinchan(chan):
-    sendraw("JOIN %s \n" % (chan))
+    sendraw(irc_command("JOIN", chan))
 
 def select_speak_type():
     if config['speak_type'] == "legacy":
@@ -106,20 +113,20 @@ def speak():
 
 def sendmsg(chan, msg):
     logging.debug("sendmsg to %s (' %s ')" % (chan, msg))
-    sendraw("PRIVMSG %s :%s \n" % (chan, msg))
+    sendraw(irc_command("PRIVMSG", chan, msg))
 
 def join_channel():
-    if config['main_channel_only_mode'] == False:
+    if not config['main_channel_only_mode']:
         logging.info("Joining the channels...")
         joinchan(config['main_channel'])
         joinchan(config['channels'])
-        if config['spam_lenny'] == True:
+        if config['spam_lenny']:
             lenny_process = Process(initalize_lenny)
 
-    elif config['main_channel_only_mode'] == True:
+    elif config['main_channel_only_mode']:
         logging.info("Main channel only mode is enabled, Only joining the main channel(s)")
         joinchan(config['main_channel'])
-        if config['spam_lenny'] == True:
+        if config['spam_lenny']:
             lenny_process = Process(initalize_lenny)
     else:
         logging.error("Invalid option for the Main channel only mode, Shutting down...")
@@ -160,37 +167,37 @@ def parse_ircmsg(rawmsg):
 
     return parsed
 
-if config['ssl_enabled'] == True:
+if config['ssl_enabled']:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 else:
     ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-if config['ssl_enabled'] == True:
+if config['ssl_enabled']:
     s.connect((config['server'], int(config['port'])))
     ircsock = ssl.wrap_socket(s)
 else:
     ircsock.connect((config['server'], int(config['port'])))
-if config['sasl'] == True:
-    sendraw("CAP REQ :sasl\r\n")
-    sendraw("AUTHENTICATE PLAIN\r\n")
-    datastr= "%s\0%s\0%s" % (config['account_username'], config['account_username'], config['account_password'])
+
+if config['sasl']:
+    sendraw(irc_command("CAP", "REQ", sasl))
+    sendraw(irc_command("AUTHENTICATE", "PLAIN"))
+    datastr = "%s\0%s\0%s" % (config['account_username'], config['account_username'], config['account_password'])
     sendraw("AUTHENTICATE " + base64.b64encode(datastr.encode()).decode() + "\r\n")
-    sendraw("CAP END\r\n")
+    sendraw(irc_command("AUTHENTICATE", base64.b64encode(datastr.encode()).decode()))
+    sendraw(irc_command("CAP", "END"))
 else:
     pass
-sendraw("USER %s %s %s :uw0tm8? \n" % (config['botnick'], config['botnick'], config['botnick']))
+
+sendraw(irc_command("USER", config['botnick'], config['botnick'], config['botnick'], 'uwotm8?'))
+
 if len(config['server_password']) != 0:
-    sendraw("PASS %s \n" % (config['server_password']))
-else:
-    pass
+    sendraw(irc_command("PASS", config['server_password']))
 
-sendraw("NICK %s \n" % (config['botnick']))
+sendraw(irc_command("NICK", config['botnick']))
 
-if config['nickserv_login'] == True:
+if config['nickserv_login']:
     time.sleep(1.5)
-    sendraw("PRIVMSG NickServ :IDENTIFY %s %s\r\n" % (config['account_username'], config['account_password']))
-else:
-    pass
+    sendraw(irc_command("PRIVMSG", "NickServ", "IDENTIFY", config['account_username'], config['account_password']))
 
 lines = []
 while 1:
@@ -230,13 +237,13 @@ while 1:
         sys.exit()
 
     elif message['command'] == '376':
-        if config['sasl'] == True:
-            if cache['ID'] == True:
+        if config['sasl']:
+            if cache['ID']:
                 logging.info("Successfuly been identified through SASL")
                 join_channel()
             else:
                 logging.warning("Failed to login through SASL")
-            if config['enforce_sasl'] == True:
+            if config['enforce_sasl']:
                 logging.error("Disconnecting: SASL has failed")
                 sys.exit()
             else:
@@ -245,7 +252,7 @@ while 1:
            join_channel()
 
     elif message['command'] == "INVITE":
-        if config['join_on_invite'] == True:
+        if config['join_on_invite']:
             cmd_args = message['args'][-1].split(' ')
             logging.info(message['replyto']+" invited me into "+cmd_args[0])
             joinchan(cmd_args[0])
