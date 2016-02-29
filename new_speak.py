@@ -19,28 +19,11 @@
 import random
 import bot
 
-wordsdB = ['fgt', 'm8', 'u', 'wot', 'penis', 'me', 'is', 'are', 'gay', 'ass', 'lookin', 'minecraft', 'fk', 'dank', 'memes', 'a', 'was', 'me', 'shit', 'piss', 'bitch', 'you', 'off', 'on', 'mum', 'quickscope', 'oooh', 'oh', 'motherfucka', 'such', 'many', '( ͡° ͜ʖ ͡°)', 'noscope', 'l33t', 'n0scope', 'oooooooohooooh', 'smoke', 'weed', 'everyday', 'fag', 'faggot', 'cunt', 'big', 'yeaaaaaaaa', 'sex', 'this', 'make', 'ho', 'suck', 'my']
+words = ['fgt', 'm8', 'u', 'wot', 'penis', 'me', 'is', 'are', 'gay', 'ass', 'lookin', 'minecraft', 'fk', 'dank', 'memes', 'a', 'was', 'me', 'shit', 'piss', 'bitch', 'you', 'off', 'on', 'mum', 'quickscope', 'oooh', 'oh', 'motherfucka', 'such', 'many', '( ͡° ͜ʖ ͡°)', 'noscope', 'l33t', 'n0scope', 'oooooooohooooh', 'smoke', 'weed', 'everyday', 'fag', 'faggot', 'cunt', 'big', 'yeaaaaaaaa', 'sex', 'this', 'make', 'ho', 'suck', 'my']
+
+def get_phrase():
+    number_of_words = random.randint(1, 20)
+    return " ".join([random.choice(words) for _ in range(number_of_words)])
 
 def speak():
-    numlist = ['1','2','3','4','5', '6', '7', '8', '9', '10']
-    number_of_words = random.choice(numlist)
-    if number_of_words == "1":
-    	bot.sendmsg(bot.message['replyto'], '%s' % (random.choice(wordsdB)))
-    elif number_of_words == "2":
-    	bot.sendmsg(bot.message['replyto'], '%s %s' % (random.choice(wordsdB),random.choice(wordsdB)))
-    elif number_of_words == "3":
-    	bot.sendmsg(bot.message['replyto'], '%s %s %s' % (random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB)))
-    elif number_of_words == "4":
-    	bot.sendmsg(bot.message['replyto'], '%s %s %s %s' % (random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB)))
-    elif number_of_words == "5":
-    	bot.sendmsg(bot.message['replyto'], '%s %s %s %s %s' % (random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB)))
-    elif number_of_words == '6':
-    	bot.sendmsg(bot.message['replyto'], '%s %s %s %s %s %s' % (random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB)))
-    elif number_of_words == '7':
-    	bot.sendmsg(bot.message['replyto'], '%s %s %s %s %s %s %s' % (random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB)))
-    elif number_of_words == '8':
-    	bot.sendmsg(bot.message['replyto'], '%s %s %s %s %s %s %s %s' % (random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB)))
-    elif number_of_words == '9':
-    	bot.sendmsg(bot.message['replyto'], '%s %s %s %s %s %s %s %s %s' % (random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB)))
-    elif number_of_words == '10':
-    	bot.sendmsg(bot.message['replyto'], '%s %s %s %s %s %s %s %s %s %s' % (random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB),random.choice(wordsdB)))
+    bot.sendmsg(bot.message['replyto'], get_phrase())
