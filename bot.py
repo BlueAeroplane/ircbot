@@ -105,7 +105,7 @@ def join_channel():
     if not config['main_channel_only_mode']:
         logging.info("Joining the channels...")
         joinchan(config['main_channel'])
-        joinchan(config['channels'])
+        joinchan(config['channels'].replace(' ', ''))
         if config['spam_lenny']:
             lenny_process = Process(initalize_lenny)
 
