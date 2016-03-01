@@ -42,3 +42,5 @@ server_password: The password that will be used to connect to the IRC server (if
 main_channel_only_mode: If enabled, the bot will only join the main channel, listed in main_channel.
 <br>
 respond_by: If set to "nick," it will only respond when it has been highlighted. If set to "all", it will respond on every message sent in the channel(s).
+<br>
+autoshuffle_words: Disabled if set to false, otherwise, set it to the time you want to autoshuffle the wordlist in the database, measured in seconds.
