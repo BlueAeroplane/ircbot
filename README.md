@@ -1,15 +1,16 @@
 # 12 year old simulator (IRC Bot)
-Simulates an annoying 12 year old kid on the internet.
+Simulates an annoying (and retarded) 12 year old kid on the internet.
 
 
 ## To-do list
+(Those marked with checks are completed.)
 
-* Have the bot construct cancerous messages/sentences, rather than already created.
-* Have the bot simulate an angry 12 year old, with the ability to get angry.
-* RAGEQUITS!
-* Have the bot spam lenny faces periodically.
-* Actually finishing the fucking bot.
-* Code improvements and cleanup
+* Have the bot construct cancerous messages/sentences, rather than having them already created. [✔]
+* RAGEQUITS! [ ]
+* Have the bot spam lenny faces periodically. [ ]
+* Actually finishing the fucking bot. [ ]
+* Improve & Cleanup the code. [ ]
+* Multi-Server support. [ ]
 
 ## Configuration
 
