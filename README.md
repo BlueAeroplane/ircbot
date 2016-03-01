@@ -1,16 +1,14 @@
 # 12 year old simulator (IRC Bot)
 Simulates an annoying (and retarded) 12 year old kid on the internet.
 
-
-## To-do list
+## To-do list for version 3.0
 (Those marked with checks are completed.)
 
-* Have the bot construct cancerous messages/sentences, rather than having them already created. [✔]
-* RAGEQUITS! [ ]
-* Have the bot spam lenny faces periodically. [ ]
-* Actually finishing the fucking bot. [ ]
+* Improve new_speak.py (including improving the way the bot speak) [ ]
+* Have all the issues on github resolved. [ ]
+* Multi-Server support [ ]
 * Improve & Cleanup the code. [ ]
-* Multi-Server support. [ ]
+* Have the bot spam lenny faces periodically. [ ]
 
 ## Configuration
 
