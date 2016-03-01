@@ -16,4 +16,5 @@
     "spam_lenny": false,
     "spam_lenny_time": "random",
     "respond_by": "nick"
+    "autoshuffle_words": 10
 }
