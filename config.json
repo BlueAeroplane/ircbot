@@ -15,6 +15,6 @@
     "main_channel_only_mode": false,
     "spam_lenny": false,
     "spam_lenny_time": "random",
-    "respond_by": "nick"
+    "respond_by": "nick",
     "autoshuffle_words": 10
 }
