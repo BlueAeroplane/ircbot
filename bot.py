@@ -106,14 +106,38 @@ def join_channel():
         logging.info("Joining the channels...")
         joinchan(config['main_channel'])
         joinchan(config['channels'].replace(' ', ''))
-        if config['spam_lenny']:
-            lenny_process = Process(initalize_lenny)
+        if config['spam_lenny'] == True:
+            lenny_process = Process(target=initalize_lenny)
+            if config['autoshuffle_words'] != False:
+                words_autoshuffle = Process(target=new_speak.words_autoshuffle)
+                words_autoshuffle.start()
+            else:
+                pass
+
+        else:
+            if config['autoshuffle_words'] != False:
+                words_autoshuffle = Process(target=new_speak.words_autoshuffle)
+                words_autoshuffle.start()
+            else:
+                pass
 
     elif config['main_channel_only_mode']:
         logging.info("Main channel only mode is enabled, Only joining the main channel(s)")
         joinchan(config['main_channel'])
-        if config['spam_lenny']:
-            lenny_process = Process(initalize_lenny)
+        if config['spam_lenny'] == True:
+            lenny_process = Process(target=initalize_lenny)
+            if config['autoshuffle_words'] != False:
+                words_autoshuffle = Process(target=new_speak.words_autoshuffle)
+                words_autoshuffle.start()
+            else:
+                pass
+        else:
+            if config['autoshuffle_words'] != False:
+                words_autoshuffle = Process(target=new_speak.words_autoshuffle)
+                words_autoshuffle.start()
+            else:
+                pass
+
     else:
         logging.error("Invalid option for the Main channel only mode, Shutting down...")
         sys.exit()
@@ -250,7 +274,7 @@ while 1:
     elif message['command'] == 'PRIVMSG':
         command = None
         access  = acs_normal
-
+    
         cmd_args = message['args'][-1].split(' ')
 
         if len(cmd_args[0:]) != 0:
