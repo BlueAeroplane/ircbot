@@ -15,12 +15,34 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import random
+import json
+from multiprocessing import Process
+import time
 
-words = ['ass', 'let', 'piss', 'hey', 'at', 'off', 'came', 'me', 'oooooooohooooh', 'weed', 'as', 'cum', 'n0scope', 'many', 'asshole', 'big', 'bitch', 'lookin', 'are', 'my', 'is', 'pepe', 'this', 'l33t', 'such', 'minecraft', 'am', 'u', 'queer', 'homo', 'anal', 'quickscope', 'mum', 'a', 'bro', 'oooh', 'you', 'oh', 'lame', 'sex', 'r8', '9/11', 'eat', 'fgt', 'wot', 'hi', 'bruh', 'on', 'dat', 'XDXDXDXD', 'm8', 'GG', 'me', 'mountain', 'cunt', 'doritos', '8/8', 'gay', 'faggot', 'ho', 'cummed', 'was', 'pro', 'fk', 'anus', 'smoke', 'motherfucka', 'dank', 'noscope', 'lets', '( ͡° ͜ʖ ͡°)', 'confirmed', 'have', 'penis', 'dew', 'MLG', 'illuminati', 'mad', 'fag', 'noone', 'memes', 'cares', 'bye', 'cancer', 'make', 'shit', 'suck', 'rectum', 'lol', 'everyday', 'mom', 'yeaaaaaaaa']
+cache = json.load(open('cache.json'))
+dB = json.load(open('dB.json'))
+config = json.load(open('config.json'))
 
 def get_phrase():
-    number_of_words = random.randint(1, 12)
-    return " ".join([random.choice(words) for _ in range(number_of_words)])
+    cache['number_of_words'] = random.randint(1, 12)
+    json.dump(cache, open("cache.json", 'w'), indent=2)
+    return " ".join([random.choice(dB['words']) for _ in range(cache['number_of_words'])])
 
 def speak(sendmsg, message):
-    sendmsg(message['replyto'], get_phrase())
+	sendmsg(message['replyto'], get_phrase())
+
+#def speak_check(sendmsg, message): # Disabled because it doesn't work yet.
+#	line_pending = get_phrase()
+#	last_word = cache['number_of_words'] + 1
+#	if dB['words2'] in line_pending:
+#		speak(sendmsg, message) # Restart over, and get an non-duplicate sentence.
+#	else:
+#		sendmsg(message['replyto'], cache['line_pending'])
+
+def words_autoshuffle():
+	while True:
+		time.sleep(config['autoshuffle_words'])
+		words = random.shuffle(dB['words'])
+		words = dB['words']
+		json.dump(dB, open("dB.json", 'w'), indent=2)
+
