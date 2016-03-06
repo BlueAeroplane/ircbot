@@ -1,4 +1,4 @@
-# 12 year old simulator - An IRC bot that simulates an annoying 12 year old.
+	# 12 year old simulator - An IRC bot that simulates an annoying 12 year old.
 # Copyright (C) 2016 Nathaniel Olsen
 
 # This program is free software: you can redistribute it and/or modify
@@ -29,7 +29,7 @@ def get_phrase():
     return " ".join([random.choice(dB['words']) for _ in range(cache['number_of_words'])])
 
 def speak(sendmsg, message):
-	sendmsg(message['replyto'], get_phrase())
+	sendmsg(message['replyto'], "%s: %s" % (message['nick'], get_phrase()))
 
 #def speak_check(sendmsg, message): # Disabled because it doesn't work yet.
 #	line_pending = get_phrase()
