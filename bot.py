@@ -106,7 +106,7 @@ def join_channel():
         logging.info("Joining the channels...")
         joinchan(config['main_channel'])
         joinchan(config['channels'].replace(' ', ''))
-        if config['spam_lenny'] == True:
+        if config['spam_lenny']:
             lenny_process = Process(target=initalize_lenny)
             if config['autoshuffle_words'] != False:
                 words_autoshuffle = Process(target=new_speak.words_autoshuffle)
@@ -124,7 +124,7 @@ def join_channel():
     elif config['main_channel_only_mode']:
         logging.info("Main channel only mode is enabled, Only joining the main channel(s)")
         joinchan(config['main_channel'])
-        if config['spam_lenny'] == True:
+        if config['spam_lenny']:
             lenny_process = Process(target=initalize_lenny)
             if config['autoshuffle_words'] != False:
                 words_autoshuffle = Process(target=new_speak.words_autoshuffle)
