@@ -283,7 +283,10 @@ while 1:
                     time.sleep(1)
                     new_speak.speak(sendmsg, message)
             else:
-                if random.random() < config['replyrate']:
+                if config['botnick'] in " ".join(cmd_args):
+                    time.sleep(1)
+                    new_speak.speak(sendmsg, message)
+                elif random.random() < config['replyrate']:
                     time.sleep(1)
                     new_speak.speak(sendmsg, message)
 
