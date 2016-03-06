@@ -66,7 +66,7 @@ class TokenBucket(object):
         return self._tokens
 
 
-tokenbucket = TokenBucket(4, 0.5)
+tokenbucket = TokenBucket(4, 5)
 
 def irc_command(command, *args):
     last_arg = args[-1]
@@ -278,13 +278,14 @@ while 1:
         cmd_args = message['args'][-1].split(' ')
 
         if len(cmd_args[0:]) != 0:
-            if config['respond_by'] == "nick":
+            if config['replyrate'] == 0:
                 if config['botnick'] in " ".join(cmd_args):
-                    time.sleep(0.5)
+                    time.sleep(1)
                     new_speak.speak(sendmsg, message)
-            elif config['respond_by'] == "all":
-                time.sleep(0.5)
-                new_speak.speak(sendmsg, message)
+            else:
+                if random.random() < config['replyrate']:
+                    time.sleep(1)
+                    new_speak.speak(sendmsg, message)
 
         # run the command if they're allowed to
         if not command is None:
