@@ -5,7 +5,7 @@
     "main_channel": "",
     "channels": "",
     "join_on_invite": true,
-    "ssl_enabled": true,
+    "ssl_enabled": false,
     "sasl": false,
     "enforce_sasl": false,
     "nickserv_login": false,
@@ -16,5 +16,6 @@
     "spam_lenny": false,
     "spam_lenny_time": "random",
     "autoshuffle_words": 10,
-    "replyrate": 0    
+    "replyrate": 0,
+    "enable_speak_check": false
 }
