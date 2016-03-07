@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # 12 year old simulator - An IRC bot that simulates an annoying 12 year old.
 # Copyright (C) 2016 Nathaniel Olsen
@@ -14,7 +15,7 @@
 
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+import atexit
 import base64
 import json
 import logging
@@ -23,17 +24,21 @@ import socket
 import ssl
 import sys
 import time
+import warnings
 from multiprocessing import Process
 
 import new_speak
 
-config = json.load(open("config.json"))
-cache = json.load(open("cache.json"))
+warnings.simplefilter('default')
+
+with open("config.json") as f:
+    config = json.load(f)
+with open("cache.json") as f:
+    cache = json.load(f)
 
 logging_level = logging.DEBUG  # Sets the logging level (valid options are DEBUG, INFO, WARNING, ERROR and CRITICAL)
 
-logging.getLogger(None).setLevel(logging_level)
-logging.basicConfig()
+logging.basicConfig(level=logging_level)
 
 
 class TokenBucket(object):
@@ -192,6 +197,8 @@ if config['ssl_enabled']:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 else:
     ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+atexit.register(lambda s: s.close(), ircsock)
 
 if config['ssl_enabled']:
     s.connect((config['server'], int(config['port'])))

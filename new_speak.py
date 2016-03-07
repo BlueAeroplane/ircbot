@@ -19,9 +19,12 @@ import json
 import random
 import time
 
-cache = json.load(open('cache.json'))
-dB = json.load(open('dB.json'))
-config = json.load(open('config.json'))
+with open('cache.json') as f:
+    cache = json.load(f)
+with open('dB.json') as f:
+    dB = json.load(f)
+with open('config.json') as f:
+    config = json.load(f)
 
 
 def get_phrase():
