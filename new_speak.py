@@ -1,4 +1,4 @@
-	# 12 year old simulator - An IRC bot that simulates an annoying 12 year old.
+    # 12 year old simulator - An IRC bot that simulates an annoying 12 year old.
 # Copyright (C) 2016 Nathaniel Olsen
 
 # This program is free software: you can redistribute it and/or modify
@@ -29,20 +29,33 @@ def get_phrase():
     return " ".join([random.choice(dB['words']) for _ in range(cache['number_of_words'])])
 
 def speak(sendmsg, message):
-	sendmsg(message['replyto'], "%s: %s" % (message['nick'], get_phrase()))
+    if config['enable_speak_check']:
+        if cache['speak_check_complete']:
+            sendmsg(message['replyto'], "%s: %s" % (message['nick'], cache['line_pending']))
+            cache['speak_check_complete'] = False # After it's done, reset it.
+            json.dump(cache, open("cache.json", 'w'), indent=2)
+        else:
+            speak_check(sendmsg, message)
+    else:
+        sendmsg(message['replyto'], "%s: %s" % (message['nick'], get_phrase()))
 
-#def speak_check(sendmsg, message): # Disabled because it doesn't work yet.
-#	line_pending = get_phrase()
-#	last_word = cache['number_of_words'] + 1
-#	if dB['words2'] in line_pending:
-#		speak(sendmsg, message) # Restart over, and get an non-duplicate sentence.
-#	else:
-#		sendmsg(message['replyto'], cache['line_pending'])
+def speak_check(sendmsg, message): # speak check is experimental, disabled by default.
+    cache['line_pending'] = get_phrase()    
+    json.dump(cache, open("cache.json", 'w'), indent=2)
+    if any(x in cache['line_pending'] for x in dB['words2']):
+       speak_check(sendmsg, message) # Restart this process.
+    else:
+        if any(x in cache['line_pending'].split()[-1] for x in dB['words3']):
+            speak_check(sendmsg, message) # Restart this process.
+        else:
+            cache['speak_check_complete'] = True
+            json.dump(cache, open("cache.json", 'w'), indent=2)
+            speak(sendmsg, message)
+
 
 def words_autoshuffle():
-	while True:
-		time.sleep(config['autoshuffle_words'])
-		words = random.shuffle(dB['words'])
-		words = dB['words']
-		json.dump(dB, open("dB.json", 'w'), indent=2)
-
+    while True:
+        time.sleep(config['autoshuffle_words'])
+        words = random.shuffle(dB['words'])
+        words = dB['words']
+        json.dump(dB, open("dB.json", 'w'), indent=2)
