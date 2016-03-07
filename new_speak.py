@@ -29,7 +29,9 @@ def get_phrase():
     message = []
     for i in range(cache['number_of_words']):
         word = random.choice(dB['words'])
-        if not word == message[i-1]:
+        if not word == message[i-1] and len(message) != 0:
+            message.append(word)
+        elif len(message) == 0:
             message.append(word)
     return " ".join(message)
 
