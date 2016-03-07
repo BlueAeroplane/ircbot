@@ -29,10 +29,11 @@ from multiprocessing import Process
 config = json.load(open("config.json"))
 cache = json.load(open("cache.json"))
 
-logging_level = logging.DEBUG # Sets the logging level (valid options are DEBUG, INFO, WARNING, ERROR and CRITICAL)
+logging_level = logging.DEBUG  # Sets the logging level (valid options are DEBUG, INFO, WARNING, ERROR and CRITICAL)
 
 logging.getLogger(None).setLevel(logging_level)
 logging.basicConfig()
+
 
 class TokenBucket(object):
     """An implementation of the token bucket algorithm.
@@ -40,6 +41,7 @@ class TokenBucket(object):
     >>> bucket = TokenBucket(80, 0.5)
     >>> bucket.consume(1)
     """
+
     def __init__(self, tokens, fill_rate):
         """tokens is the total tokens in the bucket. fill_rate is the
         rate in tokens/second that the bucket will be refilled."""
@@ -68,11 +70,13 @@ class TokenBucket(object):
 
 tokenbucket = TokenBucket(4, 5)
 
+
 def irc_command(command, *args):
     last_arg = args[-1]
     other_args = args[:-1]
 
     return "{} {} :{}\r\n".format(command, " ".join(other_args), last_arg)
+
 
 def sendraw(msg):
     while not tokenbucket.consume(1):
@@ -80,12 +84,14 @@ def sendraw(msg):
 
     ircsock.sendall(bytes(msg, "utf-8"))
 
+
 def acs_normal(message):
-  return True
+    return True
+
 
 def initalize_lenny():
     if config['spam_lenny_time'] == "random":
-        timer = ['180', '300', '60', '600', '1800', '900'] # Measured in seconds
+        timer = ['180', '300', '60', '600', '1800', '900']  # Measured in seconds
         time.sleep(random.choice(timer))
     else:
         time.sleep(random.choice(config['spam_lenny_time']))
@@ -94,12 +100,15 @@ def initalize_lenny():
 def ping(arg):
     sendraw(irc_command("PONG", arg))
 
+
 def joinchan(chan):
     sendraw(irc_command("JOIN", chan))
+
 
 def sendmsg(chan, msg):
     logging.debug("sendmsg to %s (' %s ')" % (chan, msg))
     sendraw(irc_command("PRIVMSG", chan, msg))
+
 
 def join_channel():
     if not config['main_channel_only_mode']:
@@ -142,8 +151,9 @@ def join_channel():
         logging.error("Invalid option for the Main channel only mode, Shutting down...")
         sys.exit()
 
+
 def parse_ircmsg(rawmsg):
-    tmp     = rawmsg.split(' :', 1)
+    tmp = rawmsg.split(' :', 1)
     message = tmp[0].split(' ')
 
     if len(tmp) > 1:
@@ -159,21 +169,21 @@ def parse_ircmsg(rawmsg):
         tmp = prefix.split('!', 1)
         if len(tmp) > 1:
             nick = tmp[0][1:]
-            tmp  = tmp[1].split('@', 1)
+            tmp = tmp[1].split('@', 1)
             user = tmp[0]
             if len(tmp) > 1:
                 host = tmp[1]
 
-    parsed = dict(nick = nick, user = user, host = host, prefix = prefix,
-            command = message[0], args = message[1:])
+    parsed = dict(nick=nick, user=user, host=host, prefix=prefix,
+                  command=message[0], args=message[1:])
 
     # convenience for PRIVMSGs
     parsed['replyto'] = parsed['args'][0]
     if len(parsed['replyto']) < 2:
-     pass
+        pass
     else:
-     if parsed['replyto'][0] != '#':
-        parsed['replyto'] = parsed['nick']
+        if parsed['replyto'][0] != '#':
+            parsed['replyto'] = parsed['nick']
 
     return parsed
 
@@ -259,12 +269,12 @@ while 1:
             else:
                 join_channel()
         else:
-           join_channel()
+            join_channel()
 
     elif message['command'] == "INVITE":
         if config['join_on_invite']:
             cmd_args = message['args'][-1].split(' ')
-            logging.info(message['replyto']+" invited me into "+cmd_args[0])
+            logging.info(message['replyto'] + " invited me into " + cmd_args[0])
             joinchan(cmd_args[0])
         else:
             pass
@@ -273,8 +283,8 @@ while 1:
 
     elif message['command'] == 'PRIVMSG':
         command = None
-        access  = acs_normal
-    
+        access = acs_normal
+
         cmd_args = message['args'][-1].split(' ')
 
         if len(cmd_args[0:]) != 0:
@@ -295,4 +305,4 @@ while 1:
             if access(message):
                 command(message, cmd_args[1:])
             else:
-                sendmsg(message['replyto'], message['nick'] +": Permission Denied")
+                sendmsg(message['replyto'], message['nick'] + ": Permission Denied")

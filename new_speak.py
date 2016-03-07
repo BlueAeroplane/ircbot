@@ -1,4 +1,4 @@
-    # 12 year old simulator - An IRC bot that simulates an annoying 12 year old.
+# 12 year old simulator - An IRC bot that simulates an annoying 12 year old.
 # Copyright (C) 2016 Nathaniel Olsen
 
 # This program is free software: you can redistribute it and/or modify
@@ -23,35 +23,38 @@ cache = json.load(open('cache.json'))
 dB = json.load(open('dB.json'))
 config = json.load(open('config.json'))
 
+
 def get_phrase():
     cache['number_of_words'] = random.randint(1, 12)
     json.dump(cache, open("cache.json", 'w'), indent=2)
     message = []
     for i in range(cache['number_of_words']):
         word = random.choice(dB['words'])
-        if len(message) == 0 or word != message[i-1]:
+        if len(message) == 0 or word != message[i - 1]:
             message.append(word)
     return " ".join(message)
+
 
 def speak(sendmsg, message):
     if config['enable_speak_check']:
         if cache['speak_check_complete']:
             sendmsg(message['replyto'], "%s: %s" % (message['nick'], cache['line_pending']))
-            cache['speak_check_complete'] = False # After it's done, reset it.
+            cache['speak_check_complete'] = False  # After it's done, reset it.
             json.dump(cache, open("cache.json", 'w'), indent=2)
         else:
             speak_check(sendmsg, message)
     else:
         sendmsg(message['replyto'], "%s: %s" % (message['nick'], get_phrase()))
 
-def speak_check(sendmsg, message): # speak check is experimental, disabled by default.
-    cache['line_pending'] = get_phrase()    
+
+def speak_check(sendmsg, message):  # speak check is experimental, disabled by default.
+    cache['line_pending'] = get_phrase()
     json.dump(cache, open("cache.json", 'w'), indent=2)
     if any(x in cache['line_pending'] for x in dB['words2']):
-       speak_check(sendmsg, message) # Restart this process.
+        speak_check(sendmsg, message)  # Restart this process.
     else:
         if any(x in cache['line_pending'].split()[-1] for x in dB['words3']):
-            speak_check(sendmsg, message) # Restart this process.
+            speak_check(sendmsg, message)  # Restart this process.
         else:
             cache['speak_check_complete'] = True
             json.dump(cache, open("cache.json", 'w'), indent=2)
