@@ -26,7 +26,7 @@ config = json.load(open('config.json'))
 def get_phrase():
     cache['number_of_words'] = random.randint(1, 12)
     json.dump(cache, open("cache.json", 'w'), indent=2)
-    message = []
+    return " ".join([random.choice(dB['words']) for _ in range(cache['number_of_words'])])
 
 def speak(sendmsg, message):
     if config['enable_speak_check']:
