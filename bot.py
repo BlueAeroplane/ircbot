@@ -74,7 +74,7 @@ class TokenBucket(object):
         return self._tokens
 
 
-tokenbucket = TokenBucket(4, 5)
+tokenbucket = TokenBucket(4, 0.5)
 
 
 def irc_command(command, *args):
