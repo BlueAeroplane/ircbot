@@ -43,6 +43,8 @@ def speak(sendmsg, message):
         if cache['speak_check_complete']:
             sendmsg(message['replyto'], "%s: %s" % (message['nick'], cache['line_pending']))
             cache['speak_check_complete'] = False  # After it's done, reset it.
+            cache['line_pending'] = ""
+            cache['number_of_words'] = 0
             json.dump(cache, open("cache.json", 'w'), indent=2)
         else:
             speak_check(sendmsg, message)
