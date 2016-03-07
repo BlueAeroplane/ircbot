@@ -117,14 +117,14 @@ def join_channel():
         joinchan(config['channels'].replace(' ', ''))
         if config['spam_lenny']:
             lenny_process = Process(target=initalize_lenny)
-            if config['autoshuffle_words'] != False:
+            if config['autoshuffle_words']:
                 words_autoshuffle = Process(target=new_speak.words_autoshuffle)
                 words_autoshuffle.start()
             else:
                 pass
 
         else:
-            if config['autoshuffle_words'] != False:
+            if config['autoshuffle_words']:
                 words_autoshuffle = Process(target=new_speak.words_autoshuffle)
                 words_autoshuffle.start()
             else:
@@ -135,13 +135,13 @@ def join_channel():
         joinchan(config['main_channel'])
         if config['spam_lenny']:
             lenny_process = Process(target=initalize_lenny)
-            if config['autoshuffle_words'] != False:
+            if config['autoshuffle_words']:
                 words_autoshuffle = Process(target=new_speak.words_autoshuffle)
                 words_autoshuffle.start()
             else:
                 pass
         else:
-            if config['autoshuffle_words'] != False:
+            if config['autoshuffle_words']:
                 words_autoshuffle = Process(target=new_speak.words_autoshuffle)
                 words_autoshuffle.start()
             else:
@@ -220,7 +220,7 @@ if config['nickserv_login']:
     sendraw(irc_command("PRIVMSG", "NickServ", "IDENTIFY", config['account_username'], config['account_password']))
 
 lines = []
-while 1:
+while True:
     ircmsg = ''
     if len(lines) <= 1:
         rawmsg = ''
@@ -301,7 +301,7 @@ while 1:
                     new_speak.speak(sendmsg, message)
 
         # run the command if they're allowed to
-        if not command is None:
+        if command is not None:
             if access(message):
                 command(message, cmd_args[1:])
             else:
