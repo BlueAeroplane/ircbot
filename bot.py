@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # 12 year old simulator - An IRC bot that simulates an annoying 12 year old.
 # Copyright (C) 2016 Nathaniel Olsen
 
@@ -15,16 +16,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import base64
-import datetime
 import json
 import logging
-import new_speak
 import random
 import socket
 import ssl
 import sys
 import time
 from multiprocessing import Process
+
+import new_speak
 
 config = json.load(open("config.json"))
 cache = json.load(open("cache.json"))
@@ -106,7 +107,7 @@ def joinchan(chan):
 
 
 def sendmsg(chan, msg):
-    logging.debug("sendmsg to %s (' %s ')" % (chan, msg))
+    logging.debug("sendmsg to %s (' %s ')", chan, msg)
     sendraw(irc_command("PRIVMSG", chan, msg))
 
 
@@ -116,7 +117,7 @@ def join_channel():
         joinchan(config['main_channel'])
         joinchan(config['channels'].replace(' ', ''))
         if config['spam_lenny']:
-            lenny_process = Process(target=initalize_lenny)
+            Process(target=initalize_lenny)
             if config['autoshuffle_words']:
                 words_autoshuffle = Process(target=new_speak.words_autoshuffle)
                 words_autoshuffle.start()
@@ -134,7 +135,7 @@ def join_channel():
         logging.info("Main channel only mode is enabled, Only joining the main channel(s)")
         joinchan(config['main_channel'])
         if config['spam_lenny']:
-            lenny_process = Process(target=initalize_lenny)
+            Process(target=initalize_lenny)
             if config['autoshuffle_words']:
                 words_autoshuffle = Process(target=new_speak.words_autoshuffle)
                 words_autoshuffle.start()
@@ -253,7 +254,7 @@ while True:
         json.dump(config, open("cache.json", 'w'), indent=2)
 
     elif message['command'] == '437' or message['command'] == '433':
-        logging.error("Botnick %s is unavailable." % (config['botnick']))
+        logging.error("Botnick %s is unavailable.", config['botnick'])
         sys.exit()
 
     elif message['command'] == '376':

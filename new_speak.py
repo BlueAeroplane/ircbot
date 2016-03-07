@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # 12 year old simulator - An IRC bot that simulates an annoying 12 year old.
 # Copyright (C) 2016 Nathaniel Olsen
 
@@ -14,9 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import random
 import json
-from multiprocessing import Process
+import random
 import time
 
 cache = json.load(open('cache.json'))
@@ -64,6 +64,5 @@ def speak_check(sendmsg, message):  # speak check is experimental, disabled by d
 def words_autoshuffle():
     while True:
         time.sleep(config['autoshuffle_words'])
-        words = random.shuffle(dB['words'])
-        words = dB['words']
+        random.shuffle(dB['words'])
         json.dump(dB, open("dB.json", 'w'), indent=2)
