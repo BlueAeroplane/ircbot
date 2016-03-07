@@ -194,15 +194,15 @@ def parse_ircmsg(rawmsg):
     return parsed
 
 if config['ssl_enabled']:
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 else:
     ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-atexit.register(lambda s: s.close(), ircsock)
+atexit.register(ircsock.close)
 
 if config['ssl_enabled']:
-    s.connect((config['server'], int(config['port'])))
-    ircsock = ssl.wrap_socket(s)
+    ircsock.connect((config['server'], int(config['port'])))
+    ircsock = ssl.wrap_socket(ircsock)
 else:
     ircsock.connect((config['server'], int(config['port'])))
 
