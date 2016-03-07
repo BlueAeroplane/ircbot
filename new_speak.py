@@ -33,8 +33,11 @@ def get_phrase():
     message = []
     for i in range(cache['number_of_words']):
         word = random.choice(dB['words'])
-        if len(message) == 0 or word != message[i - 1]:
-            message.append(word)
+        try:
+            if len(message) == 0 or word != message[i - 1]:
+                message.append(word)
+        except Exception:
+            pass
     return " ".join(message)
 
 
