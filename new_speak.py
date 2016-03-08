@@ -55,18 +55,21 @@ def speak(sendmsg, message):
         sendmsg(message['replyto'], "%s: %s" % (message['nick'], get_phrase()))
 
 
-def speak_check(sendmsg, message):  # speak check is experimental, disabled by default.
-    cache['line_pending'] = get_phrase()
+def speak_check(sendmsg, message): # speak check is experimental, disabled by default.
+    cache['line_pending'] = get_phrase()    
     json.dump(cache, open("cache.json", 'w'), indent=2)
-    if any(x in cache['line_pending'] for x in dB['words2']):
-        speak_check(sendmsg, message)  # Restart this process.
-    else:
-        if any(x in cache['line_pending'].split()[-1] for x in dB['words3']):
-            speak_check(sendmsg, message)  # Restart this process.
+    if cache['number_of_words'] == 1:
+        if any(x in cache['line_pending'] for x in dB['words3']):
+            speak_check(sendmsg, message) # Restart this process.
         else:
             cache['speak_check_complete'] = True
             json.dump(cache, open("cache.json", 'w'), indent=2)
             speak(sendmsg, message)
+        if any(x in cache['line_pending'] for x in dB['words2']):
+            speak_check(sendmsg, message) # Restart this process.
+        else:
+            if any(x in cache['line_pending'].split()[-1] for x in dB['words3']):
+               speak_check(sendmsg, message) # Restart this process.
 
 
 def words_autoshuffle():
