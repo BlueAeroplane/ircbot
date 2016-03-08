@@ -18,6 +18,7 @@
 import json
 import random
 import time
+from multiprocessing import Process
 
 with open('cache.json') as f:
     cache = json.load(f)
@@ -69,13 +70,16 @@ def speak_check(sendmsg, message): # speak check is experimental, disabled by de
             with open('cache.json', 'w') as f:
                 json.dump(cache, f, indent=2)
             speak(sendmsg, message)
+    else:
         if any(x in cache['line_pending'] for x in dB['words2']):
             speak_check(sendmsg, message) # Restart this process.
+        elif any(x in cache['line_pending'].split()[-1] for x in dB['words3']):
+            speak_check(sendmsg, message) # Restart this process.
         else:
-            if any(x in cache['line_pending'].split()[-1] for x in dB['words3']):
-               speak_check(sendmsg, message) # Restart this process.
-
-
+            cache['speak_check_complete'] = True
+            with open('cache.json', 'w') as f:
+                json.dump(cache, f, indent=2)
+            speak(sendmsg, message)
 
 def words_autoshuffle():
     while True:
