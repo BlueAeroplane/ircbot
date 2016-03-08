@@ -29,7 +29,8 @@ with open('config.json') as f:
 
 def get_phrase():
     cache['number_of_words'] = random.randint(1, 12)
-    json.dump(cache, open("cache.json", 'w'), indent=2)
+    with open('cache.json', 'w') as f:
+        json.dump(cache, f, indent=2)
     message = []
     for i in range(cache['number_of_words']):
         word = random.choice(dB['words'])
@@ -48,7 +49,8 @@ def speak(sendmsg, message):
             cache['speak_check_complete'] = False  # After it's done, reset it.
             cache['line_pending'] = ""
             cache['number_of_words'] = 0
-            json.dump(cache, open("cache.json", 'w'), indent=2)
+            with open('cache.json', 'w') as f:
+                json.dump(cache, f, indent=2)
         else:
             speak_check(sendmsg, message)
     else:
@@ -56,14 +58,16 @@ def speak(sendmsg, message):
 
 
 def speak_check(sendmsg, message): # speak check is experimental, disabled by default.
-    cache['line_pending'] = get_phrase()    
-    json.dump(cache, open("cache.json", 'w'), indent=2)
+    cache['line_pending'] = get_phrase()
+    with open('cache.json', 'w') as f:
+        json.dump(cache, f, indent=2)
     if cache['number_of_words'] == 1:
         if any(x in cache['line_pending'] for x in dB['words3']):
             speak_check(sendmsg, message) # Restart this process.
         else:
             cache['speak_check_complete'] = True
-            json.dump(cache, open("cache.json", 'w'), indent=2)
+            with open('cache.json', 'w') as f:
+                json.dump(cache, f, indent=2)
             speak(sendmsg, message)
         if any(x in cache['line_pending'] for x in dB['words2']):
             speak_check(sendmsg, message) # Restart this process.
@@ -72,8 +76,10 @@ def speak_check(sendmsg, message): # speak check is experimental, disabled by de
                speak_check(sendmsg, message) # Restart this process.
 
 
+
 def words_autoshuffle():
     while True:
         time.sleep(config['autoshuffle_words'])
         random.shuffle(dB['words'])
-        json.dump(dB, open("dB.json", 'w'), indent=2)
+        with open('dB.json', 'w') as f:
+            json.dump(dB, f, indent=2)
