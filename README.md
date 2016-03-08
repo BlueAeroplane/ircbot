@@ -45,3 +45,5 @@ respond_by: If set to "nick," it will only respond when it has been highlighted.
 autoshuffle_words: Disabled if set to false, otherwise, set it to the time you want to autoshuffle the wordlist in the database, measured in seconds.
 <br>
 replyrate: The rate the bot will reply without being highlighted, Where 0 is 0%, 0.5 is %50, 1 is %100. If set to 0, the bot will only reply by being highlighted.
+<br>
+enable_speak_check: When enabled, the messages will be checked before the bot sends them, including duplicates, and words that shouldn't go there or go together.
