@@ -58,7 +58,7 @@ def speak(sendmsg, message):
         sendmsg(message['replyto'], "%s: %s" % (message['nick'], get_phrase()))
 
 
-def speak_check(sendmsg, message): # speak check is experimental, disabled by default.
+def speak_check(sendmsg, message):
     cache['line_pending'] = get_phrase()
     with open('cache.json', 'w') as f:
         json.dump(cache, f, indent=2)
