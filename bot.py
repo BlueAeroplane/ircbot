@@ -118,6 +118,7 @@ def sendmsg(chan, msg):
 
 def join_channel():
     if not config['main_channel_only_mode']:
+        sendraw(irc_command("MODE %s %s" %s (config['botnick'],config['umodes'])))
         logging.info("Joining the channels...")
         joinchan(config['main_channel'])
         joinchan(config['channels'].replace(' ', ''))
