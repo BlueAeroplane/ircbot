@@ -4,6 +4,7 @@
     "port": "",
     "main_channel": "",
     "channels": "",
+    "umodes": "+i",
     "join_on_invite": true,
     "ssl_enabled": false,
     "sasl": false,
