@@ -1,6 +1,8 @@
 {
-  "number_of_words": 0,
   "line_pending": "",
+  "number_of_words": 0,
   "ID": "",
-  "speak_check_complete": false
+  "number_of_profanity_words": 0,
+  "speak_check_complete": false,
+  "use_profanity": false
 }
