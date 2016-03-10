@@ -17,6 +17,5 @@
     "spam_lenny": false,
     "spam_lenny_time": "random",
     "autoshuffle_words": 10,
-    "replyrate": 0,
-    "enable_speak_check": true
+    "replyrate": 0
 }
