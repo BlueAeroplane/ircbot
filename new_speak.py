@@ -30,32 +30,50 @@ with open('config.json') as f:
 
 def get_phrase():
     cache['number_of_words'] = random.randint(1, 12)
+    cache['use_profanity'] = random.choice([True, False])
+    with open('cache.json', 'w') as f:
+        json.dump(cache, f, indent=2)
+    if cache['use_profanity']:
+        cache['number_of_profanity_words'] = random.randint(1, 4)
+    else:
+        cache['number_of_profanity_words'] = 0
     with open('cache.json', 'w') as f:
         json.dump(cache, f, indent=2)
     message = []
     for i in range(cache['number_of_words']):
-        word = random.choice(dB['words'])
+        words = random.choice(dB['words'])
         try:
-            if len(message) == 0 or word != message[i - 1]:
-                message.append(word)
+            if len(message) == 0 or words != message[i - 1]:
+                message.append(words)
         except Exception:
             pass
+    profanity_message = []
+    if cache['number_of_profanity_words'] != 0:
+        for i in range(cache['number_of_profanity_words']):
+            profanity_words = random.choice(dB['words'])
+            try:
+                if len(profanity_message) == 0 or profanity_words != profanity_message[i - 1]:
+                    profanity_message.append(profanity_words)
+            except Exception:
+                pass
+    else:
+        pass
+
+    message.extend(profanity_message)
+    random.shuffle(message)
     return " ".join(message)
 
 
 def speak(sendmsg, message):
-    if config['enable_speak_check']:
-        if cache['speak_check_complete']:
-            sendmsg(message['replyto'], "%s: %s" % (message['nick'], cache['line_pending']))
-            cache['speak_check_complete'] = False  # After it's done, reset it.
-            cache['line_pending'] = ""
-            cache['number_of_words'] = 0
-            with open('cache.json', 'w') as f:
-                json.dump(cache, f, indent=2)
-        else:
-            speak_check(sendmsg, message)
+    if cache['speak_check_complete']:
+        sendmsg(message['replyto'], "%s: %s" % (message['nick'], cache['line_pending']))
+        cache['speak_check_complete'] = False  # After it's done, reset it.
+        cache['line_pending'] = ""
+        cache['number_of_words'] = 0
+        with open('cache.json', 'w') as f:
+            json.dump(cache, f, indent=2)
     else:
-        sendmsg(message['replyto'], "%s: %s" % (message['nick'], get_phrase()))
+        speak_check(sendmsg, message)
 
 
 def speak_check(sendmsg, message):
@@ -81,9 +99,11 @@ def speak_check(sendmsg, message):
                 json.dump(cache, f, indent=2)
             speak(sendmsg, message)
 
+
 def words_autoshuffle():
     while True:
         time.sleep(config['autoshuffle_words'])
         random.shuffle(dB['words'])
+        random.shuffle(dB['words4'])
         with open('dB.json', 'w') as f:
             json.dump(dB, f, indent=2)
