@@ -91,10 +91,6 @@ def sendraw(msg):
     ircsock.sendall(bytes(msg, "utf-8"))
 
 
-def acs_normal(message):
-    return True
-
-
 def initalize_lenny():
     if config['spam_lenny_time'] == "random":
         timer = ['180', '300', '60', '600', '1800', '900']  # Measured in seconds
@@ -267,7 +263,6 @@ while True:
 
     elif message['command'] == 'PRIVMSG':
         command = None
-        access = acs_normal
 
         cmd_args = message['args'][-1].split(' ')
 
@@ -283,10 +278,3 @@ while True:
                 elif random.random() < config['replyrate']:
                     time.sleep(1)
                     new_speak.speak(sendmsg, message)
-
-        # run the command if they're allowed to
-        if command is not None:
-            if access(message):
-                command(message, cmd_args[1:])
-            else:
-                sendmsg(message['replyto'], message['nick'] + ": Permission Denied")
