@@ -124,35 +124,12 @@ def join_channel():
         joinchan(config['channels'].replace(' ', ''))
         if config['spam_lenny']:
             Process(target=initalize_lenny)
-            if config['autoshuffle_words']:
-                words_autoshuffle = Process(target=new_speak.words_autoshuffle)
-                words_autoshuffle.start()
-            else:
-                pass
-
-        else:
-            if config['autoshuffle_words']:
-                words_autoshuffle = Process(target=new_speak.words_autoshuffle)
-                words_autoshuffle.start()
-            else:
-                pass
 
     elif config['main_channel_only_mode']:
         logging.info("Main channel only mode is enabled, Only joining the main channel(s)")
         joinchan(config['main_channel'])
         if config['spam_lenny']:
             Process(target=initalize_lenny)
-            if config['autoshuffle_words']:
-                words_autoshuffle = Process(target=new_speak.words_autoshuffle)
-                words_autoshuffle.start()
-            else:
-                pass
-        else:
-            if config['autoshuffle_words']:
-                words_autoshuffle = Process(target=new_speak.words_autoshuffle)
-                words_autoshuffle.start()
-            else:
-                pass
 
     else:
         logging.error("Invalid option for the Main channel only mode, Shutting down...")
@@ -194,19 +171,17 @@ def parse_ircmsg(rawmsg):
 
     return parsed
 
-if config['ssl_enabled']:
+if "+" in config['port']:
+    converted_port = config['port'].replace('+','')
     ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-else:
-    ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-atexit.register(ircsock.close)
-
-if config['ssl_enabled']:
-    ircsock.connect((config['server'], int(config['port'])))
+    ircsock.connect((config['server'], int(converted_port)))
     ircsock = ssl.wrap_socket(ircsock)
 else:
+    ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     ircsock.connect((config['server'], int(config['port'])))
 
+atexit.register(ircsock.close)
+    
 if config['sasl']:
     sendraw(irc_command("CAP", "REQ", "sasl"))
     sendraw(irc_command("AUTHENTICATE", "PLAIN"))
