@@ -1,4 +1,4 @@
-# 12 year old simulator (IRC Bot)
+# 12 year old simulator (IRC Bot) [![Codacy Badge](https://api.codacy.com/project/badge/grade/9111b72b5e9d47ceb984ab9062cb9447)](https://www.codacy.com/app/NateTenn5123/ircbot)
 Simulates an annoying (and retarded) 12 year old kid on the internet.
 
 ## To-do list for version 3.0
