@@ -18,7 +18,6 @@
 import json
 import random
 import time
-from multiprocessing import Process
 
 with open('cache.json') as f:
     cache = json.load(f)
