@@ -177,7 +177,6 @@ else:
     ircsock.connect((config['server'], int(config['port'])))
 
 atexit.register(ircsock.close)
-    
 if config['sasl']:
     sendraw(irc_command("CAP", "REQ", "sasl"))
     sendraw(irc_command("AUTHENTICATE", "PLAIN"))
@@ -262,7 +261,7 @@ while True:
         sys.exit(0)
 
     elif message['command'] == 'PRIVMSG':
-        command = None
+        command = None 
 
         cmd_args = message['args'][-1].split(' ')
 
