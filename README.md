@@ -47,3 +47,9 @@ autoshuffle_words: Disabled if set to false, otherwise, set it to the time you w
 replyrate: The rate the bot will reply without being highlighted, Where 0 is 0%, 0.5 is %50, 1 is %100. If set to 0, the bot will only reply by being highlighted.
 <br>
 enable_speak_check: When enabled, the messages will be checked before the bot sends them, including duplicates, and words that shouldn't go there or go together. (Note: Has been removed from the bot, no longer used)
+
+## Etc
+
+We are now accepting donations via Dogecoin!
+<br>
+Dogecoin address: D8vRPWYMhfAE9KfMpkBkZXog1uRpMZpYqS
